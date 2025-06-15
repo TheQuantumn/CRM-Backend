@@ -58,4 +58,31 @@ public class JobApplicationController {
 
         return ResponseEntity.ok(applicationRepository.findByUserId(user.getId()));
     }
+    // Update status of a job application (only by the applicant or admin)
+    @PatchMapping("/{applicationId}/status")
+    public ResponseEntity<?> updateApplicationStatus(@PathVariable Long applicationId,
+                                                     @RequestBody Map<String, String> body,
+                                                     Authentication authentication) {
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow();
+
+        JobApplication application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        // Allow only the user who applied or an admin to update status
+        if (!application.getUser().getId().equals(user.getId()) && !user.getRole().equalsIgnoreCase("ADMIN")) {
+            return ResponseEntity.status(403).body("You are not authorized to update this application");
+        }
+
+        String newStatus = body.get("status");
+        if (newStatus == null || newStatus.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Status value is missing");
+        }
+
+        application.setStatus(newStatus.trim());
+        applicationRepository.save(application);
+
+        return ResponseEntity.ok("Application status updated to: " + newStatus);
+    }
+
 }

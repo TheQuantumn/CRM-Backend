@@ -27,9 +27,10 @@ public class Job {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
+    @Column(columnDefinition = "TEXT")  // ✅ Add this
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-
 }
