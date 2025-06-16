@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy project files into the container
 COPY . .
 
+RUN chmod +x ./mvnw
+
 # Package the application (skip tests to speed up)
 RUN ./mvnw clean package -DskipTests
 
