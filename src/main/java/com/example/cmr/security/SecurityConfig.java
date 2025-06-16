@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/jobs/test"
+                                "/api/jobs/test", "/health"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/jobs/**",
