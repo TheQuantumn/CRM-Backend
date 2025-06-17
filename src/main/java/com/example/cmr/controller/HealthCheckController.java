@@ -1,5 +1,6 @@
 package com.example.cmr.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ public class HealthCheckController {
     }
 
     @GetMapping("/health")
-    public String health() {
-        return "OK";
+    public ResponseEntity<Void> health() {
+        return ResponseEntity.ok().build();
     }
 }
